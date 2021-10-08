@@ -1,15 +1,26 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
+    <Menu />
+    <img alt="Vue logo" src="../assets/logo.png" />
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import Menu from "../component/Menu.vue";
+import { defineComponent } from "vue";
 
 export default defineComponent({
-  name: 'Home',
+  name: "Home",
   components: {
+    Menu,
   },
+  created(){
+      console.log(this.$route);
+  }
 });
 </script>
+<style lang="less" scoped>
+.home{
+    height: 100%;
+}
+</style>

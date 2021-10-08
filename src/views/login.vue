@@ -1,16 +1,41 @@
 <template>
     <div class="login">
         <div class="login-canvas"><canvas></canvas></div>
-        登录页
+        <div class="login-form">
+            <el-form :rules="rules" ref="form" :model="form" label-width="120px" class="login-form-item">
+                <el-form-item label="用户名" prop="userName">
+                    <el-input v-model="form.userName" clearable></el-input>
+                </el-form-item>
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="form.password" clearable type="password"></el-input>
+                </el-form-item>
+                <el-form-item class="login-form-item-button">
+                    <el-button type="primary" @click="onSubmit" class="button-login">登录</el-button>
+                    <el-button @click="resetForm('form')" class="button-reset">重置</el-button>
+                </el-form-item>
+            </el-form>
+        </div>
     </div>
 </template>
 <script>
 /* eslint-disable */
-import { defineComponent } from 'vue'
+import { defineComponent, reactive, ref } from 'vue'
 
 export default defineComponent({
     data(){
         return {
+            form: {
+                userName: '',
+                password: '',
+            },
+            rules: {
+                userName: [
+                    { required: true, message: '请输入用户名', trigger: 'blur'}
+                ],
+                password: [
+                    { required: true, message: '请输入密码', trigger: 'blur' }
+                ]
+            }
         }
     },
     mounted(){
@@ -69,16 +94,73 @@ export default defineComponent({
         i()
     },
     methods:{
-        
+        resetForm(){
+            this.$refs.form.resetFields();
+        },
+        onSubmit(){
+            this.$refs.form.validate((valid) => {
+                if (valid) {
+                    //验证通过之后执行的代码
+                    //alert('submit!')
+                } else {
+                    console.log('error submit!!')
+                    return false
+                }
+            })
+            //console.log('onSubmit');
+        }
+    },
+    setup(){
     }
 })
 </script>
 <style lang="less" scoped>
 .login{
+    //background: #eee;  blog-back
+    background: #2f2f35;
+    /* background: rgba(12, 100, 129, 0) fixed;
+    //background-image: url(https://images.cnblogs.com/cnblogs_com/ymbcc/1987640/o_2106150232134.jpg);
+    background-image: url('../assets/background.jpg');
+    background-size: 100%;
+    background-repeat: no-repeat; */
+    width: 100%;
+    height: 100vh;
+    position: relative;
     &-canvas{
         position: fixed;
         width: 100%;
         height: 100%;
+    }
+    &-form{
+        min-width: 400px;
+        //height: 200px;
+        z-index: 1000;
+        text-align: center;
+        //background: rgba(0, 0, 0,);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-60%, -50%);
+        &-item{
+            width: 100%;
+            user-select: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            &-button{
+                .button-login{
+                    width: 48%;
+                    position: absolute;
+                    left: 0px;
+                }
+                .button-reset{
+                    width: 48%;
+                    position: absolute;
+                    right: 0px;
+                }
+            }
+        }
     }
 }
 </style>
