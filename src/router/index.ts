@@ -1,18 +1,20 @@
 /* eslint-disable */
 
-
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import Home from '../views/Home.vue'
-//import Login from '../views/login.vue'
 export const constantRoutes: Array<RouteRecordRaw> = [
     {
         path: '/',
         name: 'Home',
         component: Home,
+        redirect: '/index',
         meta: {
             title: '首页',
             hidden: false,
-        }
+        },
+        children: [
+            { path: 'index', name: 'index', component: () => import('../views/index.vue'), meta: { title: '首页', hidden: false, } }
+        ]
     },
     {
         path: '/login',
@@ -20,19 +22,31 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         // route level code-splitting
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/login.vue'),
+        component: () => import('../views/login.vue'),
         meta: {
             title: '登录页',
             hidden: true,
         }
-    }
+    },
+    {
+        path: '/about',
+        name: 'About',
+        component: Home,
+        //redirect: '/about/',
+        meta: {
+            title: '关于页',
+            hidden: false,
+        },
+        children: [
+            { path: '', component:() => import('../views/about.vue'), meta:{ title: '关于', } }
+        ]
+    },
 ]
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
     routes: constantRoutes
 })
-//console.log("查看是否有token：", sessionStorage.getItem('token'));
 router.beforeEach((to, from, next) => {
     let token = sessionStorage.getItem('token');
     if(token){
