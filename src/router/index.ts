@@ -41,6 +41,19 @@ export const constantRoutes: Array<RouteRecordRaw> = [
             { path: '', component:() => import('../views/about.vue'), meta:{ title: '关于', } }
         ]
     },
+    {
+        path: '/markdownEdit',
+        name: 'Edit',
+        component: Home,
+        //redirect: '/about/',
+        meta: {
+            title: '博客编辑',
+            hidden: false,
+        },
+        children: [
+            { path: '', component:() => import('../views/markdownEdit.vue'), meta:{ title: '博客编辑', } }
+        ]
+    },
 ]
 
 const router = createRouter({

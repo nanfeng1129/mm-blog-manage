@@ -40,7 +40,8 @@ export default defineComponent({
         margin-left: 18%;
         &-content{
             background: #eee;
-            height: calc(100vh - 8vh - 8vh);
+            padding: 20px;
+            height: calc(100vh - 8vh - 8vh - 40px);
             min-height: 500px;
             //color: rgba(0, 0, 0, .2);
         }
