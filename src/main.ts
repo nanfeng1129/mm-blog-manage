@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
@@ -16,6 +17,6 @@ import Prism from 'prismjs';
 VueMarkdownEditor.use(vuepressTheme, {
   Prism,
 });
-/* eslint-disable */
+
 createApp(App).use(store).use(ElementPlus).use(router).use(VueMarkdownEditor).mount('#app');
   
