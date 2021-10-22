@@ -1,4 +1,6 @@
+
 /* eslint-disable */
+
 declare module '*.vue' {
   import type { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
@@ -23,3 +25,5 @@ declare module '*.tiff'
 declare module '@kangc/v-md-editor/lib/theme/vuepress.js';
 declare module '@kangc/v-md-editor';
 declare module 'prismjs';
+
+//declare module '*.js'

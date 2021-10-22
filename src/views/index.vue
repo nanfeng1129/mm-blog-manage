@@ -9,8 +9,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100%;
+    //height: 100%;
     color: rgba(0, 0, 0, .2);
     background: #eee;
+    height: calc(100vh - 8vh - 8vh - 40px);
+    min-height: 500px;
 }
 </style>

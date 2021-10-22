@@ -1,37 +1,94 @@
 <template>
     <div class="markdown">
         <el-scrollbar>
-            <v-md-editor v-model="text" height="calc(84vh - 40px)" @save="saveText"></v-md-editor>
+            <div class="markdown-title">
+                <span style="padding-left: 15px; width: 14%">请输入文章标题：</span>
+                <div style="width: 50%">
+                    <el-input
+                        v-model="textTitle"
+                        placeholder="请输入文章标题"
+                        type="text"
+                        clearable
+                    ></el-input>
+                </div>
+            </div>
+            <div class="markdown-edit"><v-md-editor v-model="text" height="63vh" @save="saveText"></v-md-editor></div>
         </el-scrollbar>
     </div>
 </template>
 <script lang="ts">
+/* eslint-disable */
 import { defineComponent } from 'vue'
+import { axiosPost } from '@/utils/util'
+import { RESP_CODE, AXIOS_RES } from '@/config/config'
+import { ElMessage } from 'element-plus'
 
+interface QUERY_OBJ{
+    mdId: number;
+    content: string;
+    title: string;
+}
 export default defineComponent({
     data(){
         return {
-            text: ''
+            text: '',
+            textTitle: '',
+            type: 'add',   //判断是新增还是修改
+            mdId: 0,   //修改时要上送的文章ID
         }
     },
     methods:{
-        saveText(text: string){
-            console.log("查看保存的文章：", text)
+        saveText(content: string){
+            console.log("查看保存的文章：", content);
+            if(!this.textTitle){
+                ElMessage.error("请输入文章标题！");
+                return;
+            }
+            if(this.type === 'add'){
+                axiosPost('/manage/save', { title: this.textTitle, content }).then((res: AXIOS_RES) => {
+                    if(res.data.code === RESP_CODE.SUCCESS){
+                        ElMessage.success("文章保存成功！");
+                    }else{
+                        ElMessage.error("文章保存失败！");
+                    }
+                    //console.log(res);
+                })
+            }else{
+                axiosPost('/manage/modify', { title: this.textTitle, content, mdId: Number(this.mdId) }).then((res: AXIOS_RES) => {
+                    if(res.data.code === RESP_CODE.SUCCESS){
+                        ElMessage.success("文章修改成功！");
+                        this.$router.push('/markdown/list');
+                    }else{
+                        ElMessage.error("文章修改失败！");
+                    }
+                    //console.log(res);
+                })
+            }
+        }
+    },
+    created(){
+        console.log("查看是否有：", this.$route.query.mdId);
+        if(this.$route.query.mdId){
+            this.type = 'modify';
+            let route: QUERY_OBJ = this.$route.query as any;
+            this.mdId = route.mdId;
+            this.text = route.content;
+            this.textTitle = route.title;
+        }else{
+            this.type = 'add';
         }
     }
 })
 </script>
 <style lang="less" scoped>
-// .markdown{
-//     &::-webkit-scrollbar{
-//         width: 0px;
-//         height: 0px;
-//     }
-//     &-edit{
-//         &::-webkit-scrollbar{
-//             width: 0px;
-//             height: 0px;
-//         }
-//     }
-// }
+.markdown{
+    &-title{
+        background: #fff; 
+        padding: 20px; 
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+        margin-bottom: 20px;
+    }
+}
 </style>

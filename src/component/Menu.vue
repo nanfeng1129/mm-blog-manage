@@ -10,11 +10,11 @@
             <div v-for="(route, index) in menuList" :key="route.path">
                 <el-sub-menu v-if="route.children && route.children.length > 1" :index="index + ''">
                     <template #title>
-                        <i class="el-icon-location"></i>
+                        <!-- <i class="el-icon-location"></i> -->
                         <span>{{route.meta.title}}</span>
                     </template>
                     <el-menu-item 
-                        v-for="(childRoute, childIndex) in item.children" 
+                        v-for="(childRoute, childIndex) in route.children" 
                         :key="route.path + '/' + childRoute.path" 
                         :index="index + '-' + childIndex"
                         @click.capture ="menuJump(route.path + '/' + childRoute.path)"
@@ -83,7 +83,6 @@ export default defineComponent({
     watch:{
         $route: {
             handler({ path }){
-                //console.log("查看path：", path);
                 this.setActiveIndex(path);
             },
             deep: true

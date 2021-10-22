@@ -19,7 +19,11 @@
 </template>
 <script>
 /* eslint-disable */
-import { defineComponent, reactive, ref } from 'vue'
+import { defineComponent, } from 'vue'
+import { axiosPost,  } from '../utils/util.ts'
+import { RESP_CODE } from '../config/config.ts'
+import { mapActions } from 'vuex';
+import { ElMessage } from 'element-plus'
 
 export default defineComponent({
     data(){
@@ -35,8 +39,23 @@ export default defineComponent({
                 password: [
                     { required: true, message: '请输入密码', trigger: 'blur' }
                 ]
-            }
+            },
+            url: '/manage/login'
         }
+    },
+    created(){
+        // axiosPost('/', { userName: 'ljw', password: '123' }).then(res => {
+        //     console.log('查看接口：', res);
+        // })
+        // axiosGet('/port', { userName: 'ljw', password: '123' }).then(res => {
+        //     console.log('查看接口：', res);
+        // })
+        // axiosGet('/manage', { userName: 'ljw', password: '123' }).then(res => {
+        //     console.log('查看接口：', res);
+        // });
+        // axiosPost('/manage/login/', {userName: 'lijw2', password: 'Ljw1129@'}).then(res => {
+        //     console.log(res);
+        // })
     },
     mounted(){
         document.addEventListener('touchmove', function(e) {
@@ -93,21 +112,34 @@ export default defineComponent({
         document.ontouchstart = i
         i()
     },
+    updated(){
+        console.log('查看缩放页面是否会触发updated周期');
+    },
     methods:{
+        ...mapActions({
+            setToken: 'login/setToken'
+        }),
         resetForm(){
             this.$refs.form.resetFields();
         },
         onSubmit(){
             this.$refs.form.validate((valid) => {
                 if (valid) {
-                    //验证通过之后执行的代码
-                    //alert('submit!')
+                    axiosPost(this.url, { ...this.form }).then(res => {
+                        if(res.data.code === RESP_CODE.SUCCESS){
+                            this.$store.dispatch('login/setToken', res.data.data.token);
+                            //this.setToken(res.data.data.token);
+                            this.$router.push('/');
+                        }else{
+                            ElMessage.error(res.data.message);
+                            //console.log("查看是否到else！")
+                        }
+                    })
                 } else {
                     console.log('error submit!!')
                     return false
                 }
             })
-            //console.log('onSubmit');
         }
     },
     setup(){

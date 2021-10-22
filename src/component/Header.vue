@@ -8,7 +8,7 @@
                 </span>
                 <template #dropdown>
                 <el-dropdown-menu>
-                    <el-dropdown-item >退出登录</el-dropdown-item>
+                    <el-dropdown-item @click="handleLogout()">退出登录</el-dropdown-item>
                 </el-dropdown-menu>
                 </template>
             </el-dropdown>
@@ -17,8 +17,12 @@
     </div>
 </template>
 <script lang="ts">
+/* eslint-disable */
 import { defineComponent } from 'vue'
 import avatarPic from '../assets/avatar.jpg'
+import { ElMessage } from 'element-plus'
+import { mapActions } from 'vuex'
+import { axiosPost } from '@/utils/util'
 export default defineComponent({
     data(){
         return {
@@ -41,7 +45,10 @@ export default defineComponent({
         }, 1000)
     },
     methods:{
-        fillZero(num: number){
+        ...mapActions({
+            rmoveToken: 'login/removeToken'
+        }),
+        fillZero(num: number): string{
             let str: string;
             if(num < 10){
                 str = '0' + num;
@@ -49,6 +56,12 @@ export default defineComponent({
                 str = '' + num;
             }
             return str;
+        },
+        handleLogout(): void{
+            //sessionStorage.removeItem('token');
+            this.rmoveToken();
+            ElMessage.success('退出登录成功！');
+            this.$router.push('/login');
         }
     }
 })
@@ -58,7 +71,7 @@ export default defineComponent({
     display: flex;
     width: 100%;
     height: 8vh;
-    min-height: 30px;
+    min-height: 35px;
     //background: #eee;
     align-items: center;
     justify-content: flex-end;

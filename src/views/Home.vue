@@ -1,16 +1,16 @@
 <template>
-  <div class="home">
-    <div class="home-left">
-        <Menu />
-    </div>
-    <div class="home-right">
-        <Header />
-        <div class="home-right-content">
-            <router-view />
+    <div class="home">
+        <div class="home-left">
+            <Menu />
         </div>
-        <Footer />
+        <div class="home-right">
+            <Header />
+            <div class="home-right-content">
+                <router-view />
+            </div>
+            <Footer />
+        </div>
     </div>
-  </div>
 </template>
 
 <script lang="ts">
@@ -41,8 +41,8 @@ export default defineComponent({
         &-content{
             background: #eee;
             padding: 20px;
-            height: calc(100vh - 8vh - 8vh - 40px);
-            min-height: 500px;
+            // height: calc(100vh - 8vh - 8vh - 40px);
+            // min-height: 500px;
             //color: rgba(0, 0, 0, .2);
         }
     }

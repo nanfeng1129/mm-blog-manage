@@ -29,29 +29,17 @@ export const constantRoutes: Array<RouteRecordRaw> = [
         }
     },
     {
-        path: '/about',
-        name: 'About',
-        component: Home,
-        //redirect: '/about/',
-        meta: {
-            title: '关于页',
-            hidden: false,
-        },
-        children: [
-            { path: '', component:() => import('../views/about.vue'), meta:{ title: '关于', } }
-        ]
-    },
-    {
-        path: '/markdownEdit',
+        path: '/markdown',
         name: 'Edit',
         component: Home,
         //redirect: '/about/',
         meta: {
-            title: '博客编辑',
+            title: '博客管理',
             hidden: false,
         },
         children: [
-            { path: '', component:() => import('../views/markdownEdit.vue'), meta:{ title: '博客编辑', } }
+            { path: 'edit', component:() => import('../views/markdownEdit.vue'), meta:{ title: '博客编辑', hidden: false,} },
+            { path: 'list', component:() => import('../views/markdownList.vue'), meta:{ title: '博客列表', hidden: false,} }
         ]
     },
 ]
