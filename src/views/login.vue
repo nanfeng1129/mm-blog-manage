@@ -43,20 +43,6 @@ export default defineComponent({
             url: '/manage/login'
         }
     },
-    created(){
-        // axiosPost('/', { userName: 'ljw', password: '123' }).then(res => {
-        //     console.log('查看接口：', res);
-        // })
-        // axiosGet('/port', { userName: 'ljw', password: '123' }).then(res => {
-        //     console.log('查看接口：', res);
-        // })
-        // axiosGet('/manage', { userName: 'ljw', password: '123' }).then(res => {
-        //     console.log('查看接口：', res);
-        // });
-        // axiosPost('/manage/login/', {userName: 'lijw2', password: 'Ljw1129@'}).then(res => {
-        //     console.log(res);
-        // })
-    },
     mounted(){
         document.addEventListener('touchmove', function(e) {
             e.preventDefault()
