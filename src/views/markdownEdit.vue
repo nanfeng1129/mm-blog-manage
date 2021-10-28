@@ -12,7 +12,16 @@
                     ></el-input>
                 </div>
             </div>
-            <div class="markdown-edit"><v-md-editor v-model="text" height="63vh" @save="saveText"></v-md-editor></div>
+            <div class="markdown-edit">
+                <v-md-editor 
+                    :disabled-menus="[]"
+                    v-model="text"
+                    height="63vh" 
+                    @save="saveText"
+                    @upload-image="handleUploadImage"
+                >
+                </v-md-editor>
+            </div>
         </el-scrollbar>
     </div>
 </template>
@@ -39,7 +48,6 @@ export default defineComponent({
     },
     methods:{
         saveText(content: string){
-            console.log("查看保存的文章：", content);
             if(!this.textTitle){
                 ElMessage.error("请输入文章标题！");
                 return;
@@ -64,10 +72,28 @@ export default defineComponent({
                     //console.log(res);
                 })
             }
+        },
+        handleUploadImage(event: any, insertImage: any, files: any){
+            let formData = new FormData();
+            if(!files[0].name){
+                ElMessage.error("请上传图片！");
+                return;
+            }
+            formData.append("file", files[0]);
+            axiosPost('/upload', formData).then((res: AXIOS_RES) => {
+                if(res.data.code === RESP_CODE.SUCCESS){
+                    insertImage({
+                        url: process.env.NODE_ENV === 'development' ? ('http://localhost:3000/' + res.data.data.url) : ('http://106.12.71.142:3000/' + res.data.data.url),
+                        desc: res.data.data.name,
+                        height: '450px'
+                    });
+                }else{
+                    ElMessage.error("上传图片失败");
+                }
+            })
         }
     },
     created(){
-        console.log("查看是否有：", this.$route.query.mdId);
         if(this.$route.query.mdId){
             this.type = 'modify';
             let route: QUERY_OBJ = this.$route.query as any;
