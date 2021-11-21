@@ -61,6 +61,8 @@
                     <el-table :data="textData" border style="width: 100%">
                         <el-table-column prop="mdId" label="文章编号" align="center"/>
                         <el-table-column prop="title" label="文章标题" align="center"/>
+                        <el-table-column prop="tag" label="文章标签" align="center"/>
+                        <el-table-column prop="classification" label="文章分类" align="center"/>
                         <el-table-column prop="create_time" label="创建时间" align="center"/>
                         <el-table-column prop="update_time" label="更新时间" align="center"/>
                         <el-table-column label="操作" align="center">
@@ -114,6 +116,8 @@ interface TABLE_ROW {
     content: string;
     create_time: string;
     update_time: string;
+    classification: string;
+    tag: string;
 }
 
 interface PARAMS {
@@ -203,8 +207,8 @@ export default defineComponent({
             //         ElMessage.success('')
             //     }
             // })
-            this.$router.push({ path: '/markdown/edit', query: { mdId: row.mdId, title: row.title, content: row.content } })
-            console.log("查看行数据:", row);
+            this.$router.push({ path: '/markdown/edit', query: { mdId: row.mdId, title: row.title, content: row.content, classification: row.classification, tag: row.tag } })
+            //console.log("查看行数据:", row);
         },
         handleDelete(row: TABLE_ROW){
             console.log("查看行数据:", row);

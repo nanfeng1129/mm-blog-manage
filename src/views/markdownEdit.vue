@@ -2,21 +2,47 @@
     <div class="markdown">
         <el-scrollbar>
             <div class="markdown-title">
-                <span style="padding-left: 15px; width: 14%">请输入文章标题：</span>
-                <div style="width: 50%">
-                    <el-input
-                        v-model="textTitle"
-                        placeholder="请输入文章标题"
-                        type="text"
-                        clearable
-                    ></el-input>
-                </div>
+                <el-row>
+                    <el-col :span="7">
+                        <div><span style="padding-left: 15px">请输入文章标题：</span></div>
+                        <div>
+                            <el-input
+                                v-model="textTitle"
+                                placeholder="请输入文章标题"
+                                type="text"
+                                clearable
+                            ></el-input>
+                        </div>
+                    </el-col>
+                    <el-col :span="7" class="right">
+                        <div><span style="padding-left: 15px">请输入文章类别：</span></div>
+                        <div>
+                            <el-input
+                                v-model="textClassify"
+                                placeholder="请输入文章类别"
+                                type="text"
+                                clearable
+                            ></el-input>
+                        </div>
+                    </el-col>
+                    <el-col :span="7" class="right">
+                        <div><span style="padding-left: 15px">请输入文章标签：</span></div>
+                        <div>
+                            <el-input
+                                v-model="textTag"
+                                placeholder="空格分离标签名"
+                                type="text"
+                                clearable
+                            ></el-input>
+                        </div>
+                    </el-col>
+                </el-row>
             </div>
             <div class="markdown-edit">
                 <v-md-editor 
                     :disabled-menus="[]"
                     v-model="text"
-                    height="63vh" 
+                    height="63vh"
                     @save="saveText"
                     @upload-image="handleUploadImage"
                 >
@@ -36,10 +62,15 @@ interface QUERY_OBJ{
     mdId: number;
     content: string;
     title: string;
+    classification : string;
+    tag: string;
 }
+type Text_Type = undefined | string;
 export default defineComponent({
     data(){
         return {
+            textClassify: '',
+            textTag: '',
             text: '',
             textTitle: '',
             type: 'add',   //判断是新增还是修改
@@ -48,12 +79,12 @@ export default defineComponent({
     },
     methods:{
         saveText(content: string){
-            if(!this.textTitle){
-                ElMessage.error("请输入文章标题！");
+            if(!this.textTitle || !this.textClassify || !this.textTag){
+                ElMessage.error("文章标题 & 分类 & 标签均为必输！");
                 return;
             }
             if(this.type === 'add'){
-                axiosPost('/manage/save', { title: this.textTitle, content }).then((res: AXIOS_RES) => {
+                axiosPost('/manage/save', { title: this.textTitle, content, tag: this.textTag, classification: this.textClassify }).then((res: AXIOS_RES) => {
                     if(res.data.code === RESP_CODE.SUCCESS){
                         ElMessage.success("文章保存成功！");
                     }else{
@@ -62,7 +93,7 @@ export default defineComponent({
                     //console.log(res);
                 })
             }else{
-                axiosPost('/manage/modify', { title: this.textTitle, content, mdId: Number(this.mdId) }).then((res: AXIOS_RES) => {
+                axiosPost('/manage/modify', { title: this.textTitle, content, mdId: Number(this.mdId), tag: this.textTag, classification: this.textClassify }).then((res: AXIOS_RES) => {
                     if(res.data.code === RESP_CODE.SUCCESS){
                         ElMessage.success("文章修改成功！");
                         this.$router.push('/markdown/list');
@@ -100,6 +131,8 @@ export default defineComponent({
             this.mdId = route.mdId;
             this.text = route.content;
             this.textTitle = route.title;
+            this.textClassify = route.classification;
+            this.textTag = route.tag;
         }else{
             this.type = 'add';
         }
@@ -109,12 +142,18 @@ export default defineComponent({
 <style lang="less" scoped>
 .markdown{
     &-title{
+        overflow: hidden;
+        //width: 100%;
         background: #fff; 
         padding: 20px; 
-        display: flex;
-        align-items: center;
+        //display: flex;
+        //align-items: center;
         border-radius: 5px;
         margin-bottom: 20px;
+        font-size: 14px;
+        .right{
+            padding-left: 20px;
+        }
     }
 }
 </style>

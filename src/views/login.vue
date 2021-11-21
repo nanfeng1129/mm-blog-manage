@@ -7,7 +7,7 @@
                     <el-input v-model="form.userName" clearable></el-input>
                 </el-form-item>
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="form.password" clearable type="password"></el-input>
+                    <el-input @keydown.enter="onSubmit" v-model="form.password" clearable type="password"></el-input>
                 </el-form-item>
                 <el-form-item class="login-form-item-button">
                     <el-button type="primary" @click="onSubmit" class="button-login">登录</el-button>
@@ -97,9 +97,6 @@ export default defineComponent({
         document.onclick = i
         document.ontouchstart = i
         i()
-    },
-    updated(){
-        console.log('查看缩放页面是否会触发updated周期');
     },
     methods:{
         ...mapActions({
