@@ -1,24 +1,5 @@
-# mm-blog-manage
-
-## Project setup
+# mmBlog's 管理后台
+使用markdown格式编辑文章信息，同时也可以对文章进行分类及打标签。
+```js
+npm start or npm run serve
 ```
-npm install
-```
-
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
-
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
