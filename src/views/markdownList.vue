@@ -189,8 +189,6 @@ export default defineComponent({
             }
             this.data = params;
             this.getData(params);
-            console.log("查看formData:", this.formData);
-            console.log(typeof this.formData.create_time);
         },
         handleCurrentChange(current: number){
             let params: PARAMS = {
@@ -199,7 +197,6 @@ export default defineComponent({
                 pageNo: current
             }
             this.getData(params);
-            console.log("查看当前页：", current);
         },
         handleChange(row: TABLE_ROW){
             // axiosPost('/manage/modify', { mdId: row.mdId }).then((res: AXIOS_RES) => {
@@ -211,7 +208,6 @@ export default defineComponent({
             //console.log("查看行数据:", row);
         },
         handleDelete(row: TABLE_ROW){
-            console.log("查看行数据:", row);
             axiosPost('/manage/delete', { mdId: row.mdId }).then((res: AXIOS_RES) => {
                 if(res.data.code === RESP_CODE.SUCCESS){
                     ElMessage.success('删除成功');
